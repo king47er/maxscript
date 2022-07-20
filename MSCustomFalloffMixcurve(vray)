@@ -19,8 +19,8 @@ c = cc.GetControlCurve 0
 --- Add new point to the curve ---	
 new_curve_pt = g.curvepoint.create()
 new_curve_pt.P = g.point2.create 0.113 0.0  --- Point Coord on the graph ---
-new_curve_pt.In.X = 0 --- Input bezier ---
-new_curve_pt.Out.X = 0 --- Output bezier ---
+new_curve_pt.In.X = 0 --- Input bezier (Use low decimal number 1/100, example 0,01) ---
+new_curve_pt.Out.X = 0 --- Output bezier (Use low decimal number 1/100, example 0,01) ---
 c.Insert 1 new_curve_pt  --- Create point #1 ---
 
 
