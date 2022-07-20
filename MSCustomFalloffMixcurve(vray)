@@ -1,0 +1,67 @@
+--- Create VrayMTL and apply it to selection ---
+velvet = VRayMtl Diffuse:[0,0,0] Name:"Velvet" 
+$.material = velvet
+
+--- Add falloff map into diffuse slot ---
+velvet.texmap_diffuse = falloff()
+f = velvet.texmap_diffuse
+
+---- Set falloff color ----
+f.color1 = (color 3 4 3)
+f.color2 = (color 136 152 152)
+
+--- Set MixCurve ---
+g = (dotNetClass "Autodesk.Max.GlobalInterface").Instance
+cc = g.animatable.getanimbyhandle ( dotNetObject "System.UIntPtr" (getHandleByAnim f.mixCurve))	
+c = cc.GetControlCurve 0
+
+
+--- Add new point to the curve ---	
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.113 0.0  --- Point Coord on the graph ---
+new_curve_pt.In.X = 0 --- Input bezier ---
+new_curve_pt.Out.X = 0 --- Output bezier ---
+c.Insert 1 new_curve_pt  --- Create point #1 ---
+
+
+---- Repeat the process as many time you need in your graph ---
+	
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.199 0.083
+new_curve_pt.In.X = -0
+new_curve_pt.Out.X = 0
+c.Insert 2 new_curve_pt
+	
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.531 0.13
+new_curve_pt.In.X = -0.02
+new_curve_pt.Out.X = 0.07
+c.Insert 3 new_curve_pt
+	
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.75 0.99
+new_curve_pt.In.X = -0.07
+new_curve_pt.Out.X = 0.07
+c.Insert 4 new_curve_pt
+
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.867 1.0
+new_curve_pt.In.X = -0.05
+new_curve_pt.Out.X = 0.035
+c.Insert 5 new_curve_pt
+
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 0.965 0.0
+new_curve_pt.In.X = -0.015
+new_curve_pt.Out.X = 0.015
+c.Insert 6 new_curve_pt
+
+new_curve_pt = g.curvepoint.create()
+new_curve_pt.P = g.point2.create 1.0 0.0 --- 1.0 = maximum coord on X, need to delete the End point ---
+new_curve_pt.In.X = 0
+new_curve_pt.Out.X = 0
+c.Insert 7 new_curve_pt
+
+--- Delete the last point of the graph in this case, replaced by the one above ---
+
+c.delete 8
